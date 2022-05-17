@@ -47,4 +47,4 @@ client.on("messageCreate", (message) => {
 
 })
 
-client.login(process.env.TOKEN)
+client.login(process.env.discord_token)
