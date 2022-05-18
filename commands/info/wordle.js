@@ -10,6 +10,8 @@ module.exports = {
         let current_board = ""
         let counter = 0
         let winner = false
+
+        //Checks if there is a current wordle game running - if there is no current game, a new 5 letter Wordle word will generate
         if (wordleState.currentGame === false) {
             wordleState.wordleWord = randomWords({exactly: 1, maxLength: 5})[0]
             wordleState.currentGame = true
@@ -18,10 +20,15 @@ module.exports = {
                 wordleState.wordleWord = randomWords({exactly: 1, maxLength: 5})[0]
             }
         }
-        console.log(wordleState.wordleWord)
-        console.log(wordleState.numGuess)
+
+        //track the Wordle word in the comsole
+        consol.log(wordleState.wordleWord)
+
+        //Check if user's guess is a 5 letter word
         currentGame = true
         if(guess.length === 5 && winner === false) {
+            //Check to see if any letters in the user's guess matches the Wordle word
+            //outputs corresponding coloured boxes to let user know which letters are correct
             for(let i = 0; i < guess.length; i++) {
                 let colour = ':white_large_square: '
                 for(let k = 0; k < wordleState.wordleWord.length; k++) {
@@ -38,8 +45,10 @@ module.exports = {
                 }
                 current_board += colour
             }
+
             wordleState.numGuess ++
             message.reply(current_board + "   **" + guess + "**")
+
             if(counter === 5){
                 message.reply("Congratulations, you guessed the word in " + wordleState.numGuess + " guesses!")
                 winner = true
