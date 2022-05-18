@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
-
 const search = require("./commands/info/search")
+const wordle = require("./commands/info/wordle")
 
 // allows .env variable to be loaded into global variable that can be accessed anywhere in the code process.env
 require("dotenv").config() 
@@ -10,6 +10,13 @@ const client = new Discord.Client({
 })
 
 const prefix = "-"
+
+//Wordle State Object
+let wordleState = {
+    currentGame: false,
+    numGuess: 0,
+    wordleWord: ""
+}
 
 const welcomeId = "352235792967401472"
 
@@ -30,7 +37,9 @@ client.on("messageCreate", (message) => {
  
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const firstArg = args.shift()
-    if (!firstArg) return;
+    if (!firstArg) {
+        return;
+    }
     const command = firstArg.toLowerCase()
 
     if (command === 'hello') {
@@ -43,6 +52,10 @@ client.on("messageCreate", (message) => {
 
     if (command === 'ping') {
         message.reply("Pong")
+    }
+
+    if (command === 'wordle'){
+        wordle.execute(message, args[0], wordleState)
     }
 
 })

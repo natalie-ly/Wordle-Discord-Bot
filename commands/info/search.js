@@ -9,7 +9,7 @@ module.exports = {
 
         gis(search, function logResults(error, results) {
           if (error) {
-            console.log(error);
+            console.log(error)
             message.reply('Something went wrong')
           }
           else {
