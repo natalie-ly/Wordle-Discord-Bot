@@ -1,7 +1,6 @@
 const gis = require('g-i-s')
 module.exports = {
     name: "search",
-    category: "info",
     //array of permissions contain permissions that member is required to have to execute this command
     permissions: [],
     devOnly: false,
