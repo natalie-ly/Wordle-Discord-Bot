@@ -1,7 +1,7 @@
 const MessageEmbed = require("discord.js/src/structures/MessageEmbed")
 const randomWords = require('random-words')
 const { blueLetters } = require('../wordle_letter_emojis')
-//add win streak 
+//add leaderboard
 //add dictionary to check if guesses are valid words
 
 module.exports = {
@@ -11,7 +11,6 @@ module.exports = {
     async execute(message, guess, wordleState) {
         let current_board = ""
         let counter = 0
-        let winner = false
 
         //Checks if there is a current wordle game running - if there is no current game, a new 5 letter Wordle word will generate
         if (wordleState.currentGame === false) {
@@ -32,7 +31,7 @@ module.exports = {
         currentGame = true
 
         //Checks whether each letter in the user's guess is: at the right position, at the wrong position, or not in the wordle Word at all
-        if(guess.length === 5 && winner === false) {
+        if(guess.length === 5) {
             for(let i = 0; i < guess.length; i++) {
                 let colour = ':white_large_square: '
                 for(let k = 0; k < wordleState.wordleWord.length; k++) {
@@ -57,38 +56,41 @@ module.exports = {
 
             //Outputs embedded message that contains display to track used letters that are incorrect
             const wordleGuess = new MessageEmbed()
-            .setTitle('Wordle Guess ' + wordleState.numGuess + ' /6')
+            .setTitle('Wordle Guess ' + wordleState.numGuess + '/6')
             .setColor('#3DA5D9')
-            .addField('Guess', current_board + "   \n**" + guess + "**", true)
-            .addField('Letters', wordleState.letters.join(' '), true)
+            .addField('Guess', current_board + "   \n**" + guess.toUpperCase() + "**", false)
+            .addField('Letters', wordleState.letters.join(' '), false)
             message.channel.send({ embeds: [wordleGuess] })
-            console.log(wordleState.letters.join(''))
-            console.log(wordleState.letters)
 
-            //If counter reaches 5 (meaning all letters in user's guess are correct and in the right position), ouputs embedded message for winner
+            /*If counter reaches 5 (meaning all letters in user's guess are correct and in the right position), ouputs 
+            winner embedded message - win streak increases by 1*/
             if(counter === 5){
+                wordleState.winStreak++
                 //building embedded message for when user wins
                 const winnerMessage = new MessageEmbed()
                 .setTitle('Wordle')
-                .setColor('#3DA5D9')
+                .setColor('#61D095')
                 .addField('Game Over!', 'Congratulations, you guessed the word in ' + wordleState.numGuess + ' guesses!', true)
+                .addField('Win Streak', 'Your win streak is now: **' + wordleState.winStreak + '**')
+                .setThumbnail('https://cdn.discordapp.com/attachments/975918748781387776/976921346976120892/unknown.png')
+
 
                 message.channel.send({ embeds: [winnerMessage]})
-                winner = true
                 wordleState.currentGame = false
             }
-            //Ouputs embedded message for loser
+            //Ouputs loser embedded message, win streak ends
             else if(wordleState.numGuess === 6) {
-                //building embedded message for when user loses
                 const loserMessage = new MessageEmbed()
                 .setTitle('Wordle')
                 .setColor('#9F2042')
                 .addField('Game Over!', 'You lose, the word was **' + wordleState.wordleWord + '**', true)
+                .addField('Win Streak', 'Your win streak ended at: **' + wordleState.winStreak + '**')
+                .setThumbnail('https://static.wikia.nocookie.net/0e9418e5-bf6c-4353-8702-5b7ec0b56a52/scale-to-width/755')
 
                 message.channel.send({ embeds: [loserMessage]})
                 wordleState.currentGame = false
                 wordleState.numGuess = 0
-                winner = false
+                wordleState.winStreak = 0
             }
         }
         else {

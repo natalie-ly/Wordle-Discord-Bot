@@ -16,7 +16,8 @@ let wordleState = {
     currentGame: false,
     numGuess: 0,
     wordleWord: "",
-    letters: []
+    letters: [],
+    winStreak: 0
 }
 wordleState.letters.length = 26
 
