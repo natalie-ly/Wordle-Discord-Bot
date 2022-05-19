@@ -1,8 +1,7 @@
 const MessageEmbed = require("discord.js/src/structures/MessageEmbed")
 const randomWords = require('random-words')
-const {blueLetters} = require('./wordle_letter_emojis')
+const { blueLetters } = require('../wordle_letter_emojis')
 //add win streak 
-//embed messages
 //add dictionary to check if guesses are valid words
 
 module.exports = {
@@ -13,18 +12,12 @@ module.exports = {
         let current_board = ""
         let counter = 0
         let winner = false
-<<<<<<< HEAD:commands/wordle.js
-
-        const wordleLetters = new MessageEmbed()
-        .setTitle('Wordle')
-        .setColor('#3DA5D9')
-        .addField()
 
         //Checks if there is a current wordle game running - if there is no current game, a new 5 letter Wordle word will generate
-=======
->>>>>>> parent of 6797a00 (Added comments to Wordle command):commands/info/wordle.js
         if (wordleState.currentGame === false) {
-            letters = [blueLetters.a, 'b','c',]
+            for(let j = 0; j < 26; j++) {
+                wordleState.letters[j] = blueLetters[String.fromCharCode('a'.charCodeAt(0)+j)]
+            }
             wordleState.wordleWord = randomWords({exactly: 1, maxLength: 5})[0]
             wordleState.currentGame = true
             wordleState.numGuess = 0
@@ -32,16 +25,10 @@ module.exports = {
                 wordleState.wordleWord = randomWords({exactly: 1, maxLength: 5})[0]
             }
         }
-<<<<<<< HEAD:commands/wordle.js
 
         //track the Wordle word in the comsole
         console.log(wordleState.wordleWord)
 
-        //Check if user's guess is a 5 letter word
-=======
-        console.log(wordleState.wordleWord)
-        console.log(wordleState.numGuess)
->>>>>>> parent of 6797a00 (Added comments to Wordle command):commands/info/wordle.js
         currentGame = true
         if(guess.length === 5 && winner === false) {
             for(let i = 0; i < guess.length; i++) {
@@ -58,17 +45,22 @@ module.exports = {
                         }
                     }
                 }
-                if(colour === ':white_large_square'){
-                    letters[guess.charAt(i) - 'a'] = colour
+                if(colour === ':white_large_square: ') {
+                    wordleState.letters[guess.charCodeAt(i)-'a'.charCodeAt(0)] = ':white_large_square:'
                 }
                 current_board += colour
             }
+            
             wordleState.numGuess ++
-            message.reply(current_board + "   **" + guess + "**")
-<<<<<<< HEAD:commands/wordle.js
-    
-=======
->>>>>>> parent of 6797a00 (Added comments to Wordle command):commands/info/wordle.js
+            const wordleGuess = new MessageEmbed()
+            .setTitle('Wordle Guess ' + wordleState.numGuess + ' /6')
+            .setColor('#3DA5D9')
+            .addField('Guess', current_board + "   \n**" + guess + "**", true)
+            .addField('Letters', wordleState.letters.join(' '), true)
+            message.channel.send({ embeds: [wordleGuess] })
+            console.log(wordleState.letters.join(''))
+            console.log(wordleState.letters)
+
             if(counter === 5){
                 //building embedded message for when user wins
                 const winnerMessage = new MessageEmbed()
@@ -84,7 +76,7 @@ module.exports = {
                 //building embedded message for when user loses
                 const loserMessage = new MessageEmbed()
                 .setTitle('Wordle')
-                .setColor('#3DA5D9')
+                .setColor('#9F2042')
                 .addField('Game Over!', 'You lose, the word was **' + wordleState.wordleWord + '**', true)
 
                 message.channel.send({ embeds: [loserMessage]})
