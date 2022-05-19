@@ -26,10 +26,12 @@ module.exports = {
             }
         }
 
-        //track the Wordle word in the comsole
+        //Tracks the Wordle word in the comsole
         console.log(wordleState.wordleWord)
 
         currentGame = true
+
+        //Checks whether each letter in the user's guess is: at the right position, at the wrong position, or not in the wordle Word at all
         if(guess.length === 5 && winner === false) {
             for(let i = 0; i < guess.length; i++) {
                 let colour = ':white_large_square: '
@@ -52,6 +54,8 @@ module.exports = {
             }
             
             wordleState.numGuess ++
+
+            //Outputs embedded message that contains display to track used letters that are incorrect
             const wordleGuess = new MessageEmbed()
             .setTitle('Wordle Guess ' + wordleState.numGuess + ' /6')
             .setColor('#3DA5D9')
@@ -61,6 +65,7 @@ module.exports = {
             console.log(wordleState.letters.join(''))
             console.log(wordleState.letters)
 
+            //If counter reaches 5 (meaning all letters in user's guess are correct and in the right position), ouputs embedded message for winner
             if(counter === 5){
                 //building embedded message for when user wins
                 const winnerMessage = new MessageEmbed()
@@ -72,6 +77,7 @@ module.exports = {
                 winner = true
                 wordleState.currentGame = false
             }
+            //Ouputs embedded message for loser
             else if(wordleState.numGuess === 6) {
                 //building embedded message for when user loses
                 const loserMessage = new MessageEmbed()
