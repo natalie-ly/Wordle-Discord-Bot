@@ -11,15 +11,8 @@ const memberCount = require('./counters/member_counter')
 // allows .env variable to be loaded into global variable that can be accessed anywhere in the code process.env
 require("dotenv").config() 
 
-//Wordle State Object
-let wordleState = {
-    currentGame: false,
-    numGuess: 0,
-    wordleWord: "",
-    letters: [],
-    winStreak: 0
-}
-wordleState.letters.length = 26
+//making wordle dictionary to allow each user to have their own game of wordle running
+let wordlePlayers = {}
 
 client.once("ready", () => {
     console.log(`Bot now online in ${client.guilds.cache.size} servers.`)
@@ -49,11 +42,7 @@ client.on("messageCreate", (message) => {
     }
 
     if (command === 'wordle'){
-        wordle.execute(message, args[0].toLowerCase(), wordleState)
-    }
-
-    if(command === 'test') {
-        test.execute(message, args)
+        wordle.execute(message, args[0].toLowerCase(), wordlePlayers)
     }
 })
 

@@ -26,4 +26,16 @@ const blueLetters = {
     'y': ':regional_indicator_y:',
     'z': ':regional_indicator_z:',
 }
+
+const emptyWordleState = {
+    currentGame: false,
+    numGuess: 0,
+    wordleWord: "",
+    letters: [],
+    winStreak: 0,
+    leaderboardUser: [],
+    leaderboardScore: 0
+}
+
 exports.blueLetters = blueLetters
+exports.emptyWordleState = emptyWordleState
