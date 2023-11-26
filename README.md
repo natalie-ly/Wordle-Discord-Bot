@@ -6,8 +6,11 @@ Wordle Discord Bot is designed to let users in your server play Wordle in a chan
 
 ![image](https://github.com/natalie-ly/Wordle-Discord-Bot/assets/144157865/f7a1e496-88af-45c2-baea-8afd20ea35ef)
 
-**To Play:** Once the bot is added to your discord server, just run the following command in the discord channel - where GUESS is your 5-letter guess:
-
+## 🚀 To play
+Once the bot is added to your discord server, just run the following command in the discord channel - where GUESS is your 5-letter guess:
 ```sh
 -wordle GUESS
 ```
+
+## 📝 License
+Copyright © 2023 [Natalie Ly](https://github.com/natalie-ly).<br />
